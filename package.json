@@ -23,6 +23,12 @@
           "placeholder": "Take out the trash"
         }
       ]
+    },
+    {
+      "name": "list-inbox",
+      "title": "List the tasks in your inbox",
+      "description": "List the tasks currently in your OmniFocus inbox",
+      "mode": "view"
     }
   ],
   "dependencies": {
