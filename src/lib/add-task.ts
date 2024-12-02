@@ -1,31 +1,22 @@
 import { OmniFocusTask } from "./domain/task";
+import { executeScript } from "./executeScript";
 import { CreateOmniFocusTaskOptions } from "./types";
-import { runAppleScript } from "@raycast/utils";
 
-export function getCreateTaskAppleScript(name: string) {
+export function getCreateTaskAppleScript(options: CreateOmniFocusTaskOptions) {
   return `
-tell application "OmniFocus"
-    tell default document
-        make new inbox task with properties {name:"${name}"}
-    end tell
-end tell
+  const omnifocus = Application('OmniFocus');
+  const doc = omnifocus.defaultDocument();
+
+  const task = omnifocus.InboxTask(${JSON.stringify(options)})
+  doc.inboxTasks.push(task)
+  return {
+      id: task.id(),
+      name: task.name()
+  };
 `;
 }
 
-function extractIdFromAppleScriptResponse(response: string): string {
-  const extractor = /task id ([^\s]+)/;
-  const match = response.match(extractor);
-
-  if (!match) {
-    throw new Error("cannot extract id from AppleScript response");
-  }
-
-  const [, id] = match;
-  return id;
-}
 export async function addTaskToInbox(options: CreateOmniFocusTaskOptions): Promise<OmniFocusTask> {
-  const { name } = options;
-  const result = await runAppleScript(getCreateTaskAppleScript(name));
-  const id = extractIdFromAppleScriptResponse(result);
-  return new OmniFocusTask(id, name, false, false);
+  const task = await executeScript(getCreateTaskAppleScript(options));
+  return new OmniFocusTask(task.id, task.name, false, false);
 }

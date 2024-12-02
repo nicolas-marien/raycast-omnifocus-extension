@@ -11,9 +11,9 @@
   "license": "MIT",
   "commands": [
     {
-      "name": "add-to-inbox",
-      "title": "Add to inbox",
-      "description": "Add an item to your OmniFocus inbox.",
+      "name": "quick-add-to-inbox",
+      "title": "Quick add to inbox",
+      "description": "Quickly add a task to your OmniFocus inbox.",
       "mode": "no-view",
       "arguments": [
         {
