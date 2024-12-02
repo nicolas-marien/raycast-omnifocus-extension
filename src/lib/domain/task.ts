@@ -4,5 +4,6 @@ export class OmniFocusTask {
     public name: string,
     public completed: boolean,
     public flagged: boolean,
+    public note?: string,
   ) {}
 }

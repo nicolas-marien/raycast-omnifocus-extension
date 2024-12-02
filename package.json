@@ -25,6 +25,12 @@
       ]
     },
     {
+      "name": "add-task",
+      "title": "Add a task",
+      "description": "Add a task to OmniFocus using",
+      "mode": "view"
+    },
+    {
       "name": "list-inbox",
       "title": "List the tasks in your inbox",
       "description": "List the tasks currently in your OmniFocus inbox",
