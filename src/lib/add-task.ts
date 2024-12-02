@@ -18,5 +18,5 @@ export function getCreateTaskAppleScript(options: CreateOmniFocusTaskOptions) {
 
 export async function addTaskToInbox(options: CreateOmniFocusTaskOptions): Promise<OmniFocusTask> {
   const task = await executeScript(getCreateTaskAppleScript(options));
-  return new OmniFocusTask(task.id, task.name, false, false);
+  return task;
 }

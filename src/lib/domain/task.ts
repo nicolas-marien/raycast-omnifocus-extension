@@ -1,9 +1,10 @@
-export class OmniFocusTask {
-  constructor(
-    public id: string,
-    public name: string,
-    public completed: boolean,
-    public flagged: boolean,
-    public note?: string,
-  ) {}
-}
+import { Project } from "./project";
+
+export type OmniFocusTask = {
+  id: string;
+  name: string;
+  completed: boolean;
+  flagged: boolean;
+  project?: Project;
+  note?: string;
+};
