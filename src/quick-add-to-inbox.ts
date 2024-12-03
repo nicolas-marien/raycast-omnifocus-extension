@@ -1,5 +1,5 @@
 import { LaunchProps, showToast, Toast } from "@raycast/api";
-import { addTaskToInbox } from "./lib/add-task";
+import { addTaskToInbox } from "./lib/add-task-to-inbox";
 
 export default async function AddTodoCommand(props: LaunchProps<{ arguments: Arguments.QuickAddToInbox }>) {
   const { todo } = props.arguments;
