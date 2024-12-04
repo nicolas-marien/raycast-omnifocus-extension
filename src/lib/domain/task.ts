@@ -4,4 +4,6 @@ export type OmniFocusTask = {
   completed: boolean;
   flagged: boolean;
   note?: string;
+  deferDate?: Date;
+  dueDate?: Date;
 };
