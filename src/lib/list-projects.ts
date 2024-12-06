@@ -1,5 +1,5 @@
 import { Project } from "./domain/project";
-import { executeScript } from "./executeScript";
+import { executeScript } from "./utils/executeScript";
 
 export async function getProjects(): Promise<Project[]> {
   const projects: Project[] = await executeScript(`

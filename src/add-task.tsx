@@ -4,7 +4,7 @@ import { FormValidation, useForm } from "@raycast/utils";
 import { useEffect, useState } from "react";
 import { Project } from "./lib/domain/project";
 import { getProjects } from "./lib/list-projects";
-import { addTaskToProject } from "./lib/add-task";
+import { addTask } from "./lib/add-task";
 
 interface FormValues extends CreateOmniFocusTaskOptions {
   projectName?: string;
@@ -21,7 +21,7 @@ export default function Command() {
       const { projectName, ...task } = values;
       console.log(values);
       if (projectName) {
-        await addTaskToProject(projectName, task);
+        await addTask(task, projectName);
         await showToast({
           style: Toast.Style.Success,
           title: "Task added!",

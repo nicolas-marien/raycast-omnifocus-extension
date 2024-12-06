@@ -1,6 +1,6 @@
-import { executeScript } from "./executeScript";
+import { executeScript } from "./utils/executeScript";
 export async function listTasks() {
-  return await executeScript(/* javascript */ `
+  return await executeScript(`
 const omnifocus = Application("OmniFocus");
 const doc = omnifocus.defaultDocument;
 
