@@ -19,14 +19,11 @@ export default function Command() {
     },
     async onSubmit(values) {
       const { projectName, ...task } = values;
-      console.log(values);
-      if (projectName) {
-        await addTask(task, projectName);
-        await showToast({
-          style: Toast.Style.Success,
-          title: "Task added!",
-        });
-      }
+      await addTask(task, projectName);
+      await showToast({
+        style: Toast.Style.Success,
+        title: "Task added!",
+      });
     },
     validation: {
       name: FormValidation.Required,
@@ -53,6 +50,7 @@ export default function Command() {
       <Form.DatePicker title="Due Date" {...itemProps.dueDate} id="dueDate" type={Form.DatePicker.Type.Date} />
       <Form.TextArea title="Note" {...itemProps.note} />
       <Form.Dropdown title="Projects" {...itemProps.projectName} id="projectName">
+        <Form.Dropdown.Item value="" title="No Project (Inbox)" />
         {projects.map((p) => (
           <Form.Dropdown.Item key={p.id} value={p.name} title={p.name} />
         ))}
