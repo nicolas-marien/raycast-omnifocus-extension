@@ -1,4 +1,9 @@
-import { OmniFocusTask } from "./domain/task";
-
-export type CreateOmniFocusTaskOptions = Required<Pick<OmniFocusTask, "name">> &
-  Partial<Omit<OmniFocusTask, "id" | "name" | "completed">>;
+export type CreateOmniFocusTaskOptions = {
+  name: string;
+  flagged?: boolean;
+  note?: string;
+  deferDate?: Date;
+  dueDate?: Date;
+  projectName?: string;
+  tags: string[];
+};
