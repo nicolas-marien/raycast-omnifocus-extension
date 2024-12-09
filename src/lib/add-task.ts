@@ -2,7 +2,20 @@ import { OmniFocusTask } from "./domain/task";
 import { executeScript } from "./utils/executeScript";
 import { CreateOmniFocusTaskOptions } from "./types";
 
-function getCreateTaskAppleScript(options: CreateOmniFocusTaskOptions, projectName?: string): string {
+function getTagsScriptFragment(tags: string[]): string {
+  return `
+    [${tags.map((tag) => `'${tag}'`).join(",")}].map(t => {
+      let tag = doc.flattenedTags.whose({name: t})
+      if (!tag) {
+       tag = omnifocus.Tag({name: t})
+       doc.tags.push(tag)
+      }
+      return tag
+    })
+  `;
+}
+function getCreateTaskAppleScript(options: CreateOmniFocusTaskOptions): string {
+  const { projectName, tags } = options;
   const taskProperties = `
     name: '${options.name}',
     ${options.deferDate ? "deferDate: new Date('" + options.deferDate.toISOString() + "')," : ""}
@@ -20,6 +33,10 @@ function getCreateTaskAppleScript(options: CreateOmniFocusTaskOptions, projectNa
         ${taskProperties}
       })
       doc.inboxTasks.push(task)
+
+      if (${tags.length}) {
+        omnifocus.add(${getTagsScriptFragment(tags)}, {to: task.tags})
+      }
 
       return {
         id: task.id(),
@@ -41,6 +58,10 @@ function getCreateTaskAppleScript(options: CreateOmniFocusTaskOptions, projectNa
     })
     project.tasks.push(task)
 
+    if (${tags.length}) {
+      omnifocus.add(${getTagsScriptFragment(tags)}, {to: task.tags})
+    }
+
     return {
       id: task.id(),
       name: task.name()
@@ -48,8 +69,8 @@ function getCreateTaskAppleScript(options: CreateOmniFocusTaskOptions, projectNa
   `;
 }
 
-export async function addTask(options: CreateOmniFocusTaskOptions, projectName?: string): Promise<OmniFocusTask> {
-  const script = getCreateTaskAppleScript(options, projectName);
+export async function addTask(options: CreateOmniFocusTaskOptions): Promise<OmniFocusTask> {
+  const script = getCreateTaskAppleScript(options);
 
   console.log(script);
   const task = await executeScript(script);
