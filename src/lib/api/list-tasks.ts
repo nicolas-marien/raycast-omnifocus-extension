@@ -13,7 +13,6 @@ return tasks.reduce((ts, t) => {
     ts.push({
       id: t.id(),
       name: t.name(),
-      completed,
       flagged: t.flagged(),
     });
   }
