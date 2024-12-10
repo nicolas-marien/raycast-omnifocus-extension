@@ -6,7 +6,7 @@ function getTagsScriptFragment(tags: string[]): string {
   return `
     [${tags.map((tag) => `'${tag}'`).join(",")}].map(t => {
       let tag = doc.flattenedTags.whose({name: t})
-      if (!tag) {
+      if (!tag.length) {
        tag = omnifocus.Tag({name: t})
        doc.tags.push(tag)
       }
