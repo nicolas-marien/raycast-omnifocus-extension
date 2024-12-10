@@ -26,11 +26,18 @@ export default function Command() {
         const tagsToCreate = values.tagsToCreate.split(",").map((tag) => tag.trim());
         taskDraft.tags.push(...tagsToCreate);
       }
-      await addTask(taskDraft);
-      await showToast({
-        style: Toast.Style.Success,
-        title: "Task added!",
-      });
+      try {
+        await addTask(taskDraft);
+        await showToast({
+          style: Toast.Style.Success,
+          title: "Task added!",
+        });
+      } catch {
+        await showToast({
+          style: Toast.Style.Failure,
+          title: "Something went wrong.",
+        });
+      }
     },
     validation: {
       name: FormValidation.Required,
