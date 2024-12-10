@@ -1,4 +1,4 @@
-import { Action, ActionPanel, Form, Icon, showToast, Toast } from "@raycast/api";
+import { Action, ActionPanel, Form, Icon, LaunchProps, showToast, Toast } from "@raycast/api";
 import { FormValidation, useForm } from "@raycast/utils";
 import { useEffect, useState } from "react";
 import { addTask } from "./lib/api/add-task";
@@ -10,7 +10,8 @@ import { CreateOmniFocusTaskOptions } from "./lib/types/task";
 interface FormValues extends CreateOmniFocusTaskOptions {
   tagsToCreate?: string;
 }
-export default function Command() {
+export default function Command(props: LaunchProps<{ draftValues: FormValues }>) {
+  const { draftValues } = props;
   const [projects, setProjects] = useState<Project[]>([]);
   const [tags, setTags] = useState<string[]>([]);
   const { handleSubmit, itemProps } = useForm<FormValues>({
@@ -52,25 +53,49 @@ export default function Command() {
   }, []);
   return (
     <Form
+      enableDrafts
       actions={
         <ActionPanel>
           <Action.SubmitForm title="Submit" onSubmit={handleSubmit} />
         </ActionPanel>
       }
     >
-      <Form.TextField title="Name" placeholder="Walk the cat" {...itemProps.name} autoFocus />
-      <Form.Checkbox title="Flagged" label="Flagged" {...itemProps.flagged} />
+      <Form.TextField
+        title="Name"
+        placeholder="Walk the cat"
+        {...itemProps.name}
+        autoFocus
+        defaultValue={draftValues?.name}
+      />
+      <Form.Checkbox title="Flagged" label="Flagged" {...itemProps.flagged} defaultValue={draftValues?.flagged} />
       <Form.Separator />
-      <Form.DatePicker title="Defer Date" {...itemProps.deferDate} id="deferDate" type={Form.DatePicker.Type.Date} />
-      <Form.DatePicker title="Due Date" {...itemProps.dueDate} id="dueDate" type={Form.DatePicker.Type.Date} />
+      <Form.DatePicker
+        title="Defer Date"
+        {...itemProps.deferDate}
+        id="deferDate"
+        type={Form.DatePicker.Type.Date}
+        defaultValue={draftValues?.deferDate}
+      />
+      <Form.DatePicker
+        title="Due Date"
+        {...itemProps.dueDate}
+        id="dueDate"
+        type={Form.DatePicker.Type.Date}
+        defaultValue={draftValues?.dueDate}
+      />
       <Form.Separator />
-      <Form.TagPicker title="Tags" {...itemProps.tags}>
+      <Form.TagPicker title="Tags" {...itemProps.tags} defaultValue={draftValues?.tags}>
         {tags.map((tag) => (
           <Form.TagPicker.Item key={tag} value={tag} title={tag} icon={{ source: Icon.Tag }} />
         ))}
       </Form.TagPicker>
       <Form.Description text="If you want to assign tags that don't exist yet, you can add them here. They will be created in OmniFocus." />
-      <Form.TextField title="Tags to create" placeholder="tag1,tag2,tag3" {...itemProps.tagsToCreate} />
+      <Form.TextField
+        title="Tags to create"
+        placeholder="tag1,tag2,tag3"
+        {...itemProps.tagsToCreate}
+        defaultValue={draftValues?.tagsToCreate}
+      />
       <Form.Dropdown title="Projects" {...itemProps.projectName} id="projectName">
         <Form.Dropdown.Item value="" title="No Project (Inbox)" />
         {projects.map((p) => (
