@@ -1,15 +1,14 @@
 import { Action, ActionPanel, Form, Icon, showToast, Toast } from "@raycast/api";
-import { CreateOmniFocusTaskOptions } from "./lib/types";
 import { FormValidation, useForm } from "@raycast/utils";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import { addTask } from "./lib/add-task";
 import { Project } from "./lib/domain/project";
 import { getProjects } from "./lib/list-projects";
-import { addTask } from "./lib/add-task";
 import { listTags } from "./lib/list-tags";
+import { CreateOmniFocusTaskOptions } from "./lib/types";
 
 interface FormValues extends CreateOmniFocusTaskOptions {
-  projectName?: string;
-  tags: string[];
+  tagsToCreate?: string;
 }
 export default function Command() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -22,7 +21,12 @@ export default function Command() {
       tags: [],
     },
     async onSubmit(values) {
-      await addTask(values);
+      const taskDraft = { ...values };
+      if (values.tagsToCreate) {
+        const tagsToCreate = values.tagsToCreate.split(",").map((tag) => tag.trim());
+        taskDraft.tags.push(...tagsToCreate);
+      }
+      await addTask(taskDraft);
       await showToast({
         style: Toast.Style.Success,
         title: "Task added!",
@@ -58,6 +62,8 @@ export default function Command() {
           <Form.TagPicker.Item key={tag} value={tag} title={tag} icon={{ source: Icon.Tag }} />
         ))}
       </Form.TagPicker>
+      <Form.Description text="If you want to assign tags that don't exist yet, you can add them here. They will be created in OmniFocus." />
+      <Form.TextField title="Tags to create" placeholder="tag1,tag2,tag3" {...itemProps.tagsToCreate} />
       <Form.Dropdown title="Projects" {...itemProps.projectName} id="projectName">
         <Form.Dropdown.Item value="" title="No Project (Inbox)" />
         {projects.map((p) => (
