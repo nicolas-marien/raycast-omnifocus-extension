@@ -1,12 +1,11 @@
-import { Project } from "./domain/project";
-import { executeScript } from "./utils/executeScript";
+import { Project } from "../types/project";
+import { executeScript } from "../utils/executeScript";
 
 export async function getProjects(): Promise<Project[]> {
-  const projects: Project[] = await executeScript(`
+  const projects = await executeScript<Project[]>(`
  const omnifocus = Application('OmniFocus');
     const doc = omnifocus.defaultDocument();
     
-    // Get all projects and filter for not completed ones
     const projects = doc.flattenedProjects()
         .map(project => ({
             id: project.id(),

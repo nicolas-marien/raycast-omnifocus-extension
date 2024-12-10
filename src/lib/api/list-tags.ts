@@ -1,4 +1,4 @@
-import { executeScript } from "./utils/executeScript";
+import { executeScript } from "../utils/executeScript";
 
 export async function listTags(): Promise<string[]> {
   const script = `

@@ -1,11 +1,11 @@
 import { Action, ActionPanel, Form, Icon, showToast, Toast } from "@raycast/api";
 import { FormValidation, useForm } from "@raycast/utils";
 import { useEffect, useState } from "react";
-import { addTask } from "./lib/add-task";
-import { Project } from "./lib/domain/project";
-import { getProjects } from "./lib/list-projects";
-import { listTags } from "./lib/list-tags";
-import { CreateOmniFocusTaskOptions } from "./lib/types";
+import { addTask } from "./lib/api/add-task";
+import { Project } from "./lib/types/project";
+import { getProjects } from "./lib/api/list-projects";
+import { listTags } from "./lib/api/list-tags";
+import { CreateOmniFocusTaskOptions } from "./lib/types/task";
 
 interface FormValues extends CreateOmniFocusTaskOptions {
   tagsToCreate?: string;

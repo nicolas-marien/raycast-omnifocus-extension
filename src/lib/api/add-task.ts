@@ -1,6 +1,5 @@
-import { OmniFocusTask } from "./domain/task";
-import { executeScript } from "./utils/executeScript";
-import { CreateOmniFocusTaskOptions } from "./types";
+import { CreateOmniFocusTaskOptions, OmniFocusTask } from "../types/task";
+import { executeScript } from "../utils/executeScript";
 
 function getTagsScriptFragment(tags: string[]): string {
   return `
@@ -72,7 +71,6 @@ function getCreateTaskAppleScript(options: CreateOmniFocusTaskOptions): string {
 export async function addTask(options: CreateOmniFocusTaskOptions): Promise<OmniFocusTask> {
   const script = getCreateTaskAppleScript(options);
 
-  console.log(script);
-  const task = await executeScript(script);
+  const task = await executeScript<OmniFocusTask>(script);
   return task;
 }

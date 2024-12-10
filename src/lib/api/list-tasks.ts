@@ -1,6 +1,7 @@
-import { executeScript } from "./utils/executeScript";
+import { OmniFocusTask } from "../types/task";
+import { executeScript } from "../utils/executeScript";
 export async function listTasks() {
-  return await executeScript(`
+  return await executeScript<OmniFocusTask[]>(`
 const omnifocus = Application("OmniFocus");
 const doc = omnifocus.defaultDocument;
 
@@ -18,6 +19,5 @@ return tasks.reduce((ts, t) => {
   }
   return ts;
 }, []);
-
 `);
 }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { OmniFocusTask } from "./lib/domain/task";
+import { OmniFocusTask } from "./lib/types/task";
 import { List } from "@raycast/api";
-import { listTasks } from "./lib/list-tasks";
+import { listTasks } from "./lib/api/list-tasks";
 
 export default function ListInboxTasks() {
   const [tasks, setTasks] = useState<OmniFocusTask[]>([]);
