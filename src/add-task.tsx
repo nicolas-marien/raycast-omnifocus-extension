@@ -15,12 +15,7 @@ export default function Command(props: LaunchProps<{ draftValues: FormValues }>)
   const [projects, setProjects] = useState<Project[]>([]);
   const [tags, setTags] = useState<string[]>([]);
   const { handleSubmit, itemProps } = useForm<FormValues>({
-    initialValues: {
-      deferDate: undefined,
-      dueDate: undefined,
-      projectName: undefined,
-      tags: [],
-    },
+    initialValues: draftValues,
     async onSubmit(values) {
       const taskDraft = { ...values };
       if (values.tagsToCreate) {
@@ -60,42 +55,19 @@ export default function Command(props: LaunchProps<{ draftValues: FormValues }>)
         </ActionPanel>
       }
     >
-      <Form.TextField
-        title="Name"
-        placeholder="Walk the cat"
-        {...itemProps.name}
-        autoFocus
-        defaultValue={draftValues?.name}
-      />
-      <Form.Checkbox title="Flagged" label="Flagged" {...itemProps.flagged} defaultValue={draftValues?.flagged} />
+      <Form.TextField title="Name" placeholder="Walk the cat" {...itemProps.name} autoFocus />
+      <Form.Checkbox title="Flagged" label="Flagged" {...itemProps.flagged} />
       <Form.Separator />
-      <Form.DatePicker
-        title="Defer Date"
-        {...itemProps.deferDate}
-        id="deferDate"
-        type={Form.DatePicker.Type.Date}
-        defaultValue={draftValues?.deferDate}
-      />
-      <Form.DatePicker
-        title="Due Date"
-        {...itemProps.dueDate}
-        id="dueDate"
-        type={Form.DatePicker.Type.Date}
-        defaultValue={draftValues?.dueDate}
-      />
+      <Form.DatePicker title="Defer Date" {...itemProps.deferDate} id="deferDate" type={Form.DatePicker.Type.Date} />
+      <Form.DatePicker title="Due Date" {...itemProps.dueDate} id="dueDate" type={Form.DatePicker.Type.Date} />
       <Form.Separator />
-      <Form.TagPicker title="Tags" {...itemProps.tags} defaultValue={draftValues?.tags}>
+      <Form.TagPicker title="Tags" {...itemProps.tags}>
         {tags.map((tag) => (
           <Form.TagPicker.Item key={tag} value={tag} title={tag} icon={{ source: Icon.Tag }} />
         ))}
       </Form.TagPicker>
       <Form.Description text="If you want to assign tags that don't exist yet, you can add them here. They will be created in OmniFocus." />
-      <Form.TextField
-        title="Tags to create"
-        placeholder="tag1,tag2,tag3"
-        {...itemProps.tagsToCreate}
-        defaultValue={draftValues?.tagsToCreate}
-      />
+      <Form.TextField title="Tags to create" placeholder="tag1,tag2,tag3" {...itemProps.tagsToCreate} />
       <Form.Dropdown title="Projects" {...itemProps.projectName} id="projectName">
         <Form.Dropdown.Item value="" title="No Project (Inbox)" />
         {projects.map((p) => (
