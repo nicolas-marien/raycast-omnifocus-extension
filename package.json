@@ -13,7 +13,7 @@
   "commands": [
     {
       "name": "quick-add-to-inbox",
-      "title": "Quick Add To Inbox",
+      "title": "Quick Add to Inbox",
       "description": "Quickly add a task to your OmniFocus inbox.",
       "mode": "no-view",
       "arguments": [
@@ -27,13 +27,13 @@
     },
     {
       "name": "add-task",
-      "title": "Add A Task",
+      "title": "Add a Task",
       "description": "Add a task to OmniFocus.",
       "mode": "view"
     },
     {
       "name": "list-inbox",
-      "title": "List The Tasks In Your Inbox",
+      "title": "List the Tasks in Your Inbox",
       "description": "List the tasks currently in your inbox.",
       "mode": "view"
     }
