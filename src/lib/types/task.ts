@@ -6,6 +6,8 @@ export type OmniFocusTask = {
   note?: string;
   deferDate?: Date;
   dueDate?: Date;
+  dropped: boolean;
+  tags: string[];
 };
 
 export type CreateOmniFocusTaskOptions = {
