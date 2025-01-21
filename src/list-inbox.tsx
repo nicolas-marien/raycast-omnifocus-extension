@@ -1,9 +1,10 @@
+import { Action, ActionPanel, Color, Icon, Keyboard, List, open, showToast, Toast } from "@raycast/api";
 import { useEffect, useState } from "react";
-import { OmniFocusTask } from "./lib/types/task";
-import { Action, ActionPanel, Color, Icon, List, showToast, Toast, open, Keyboard } from "@raycast/api";
-import { listTasks } from "./lib/api/list-tasks";
-import { deleteTask } from "./lib/api/delete-task";
 import { completeTask } from "./lib/api/complete.task";
+import { deleteTask } from "./lib/api/delete-task";
+import { listTasks } from "./lib/api/list-tasks";
+import { OmniFocusTask } from "./lib/types/task";
+import { useValidateRequirements } from "./lib/utils/useValidateRequirements";
 
 function getAccessories(task: OmniFocusTask): List.Item.Accessory[] {
   const accessories: List.Item.Accessory[] = [];
@@ -43,20 +44,39 @@ function getAccessories(task: OmniFocusTask): List.Item.Accessory[] {
 export default function ListInboxTasks() {
   const [tasks, setTasks] = useState<OmniFocusTask[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { loading, check, error } = useValidateRequirements();
+  const [requirementError, setRequirementError] = useState<string | null>(null);
 
   const fetchTasks = async () => {
     setIsLoading(true);
-    const newTasks = await listTasks();
-    setTasks(newTasks);
-    setIsLoading(false);
+    try {
+      const newTasks = await listTasks();
+      setTasks(newTasks);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
-    fetchTasks();
-  }, []);
+    if (!loading) {
+      if (check) {
+        fetchTasks();
+      } else {
+        setRequirementError(error);
+      }
+    }
+  }, [loading, check, error]);
+
+  if (requirementError) {
+    return (
+      <List>
+        <List.EmptyView title={requirementError} icon={Icon.Plug} />
+      </List>
+    );
+  }
 
   return (
-    <List isLoading={isLoading}>
+    <List isLoading={loading || isLoading}>
       {tasks.length === 0 && <List.EmptyView title="No tasks in inbox" />}
       {tasks.length > 0 &&
         tasks.map((t) => {
