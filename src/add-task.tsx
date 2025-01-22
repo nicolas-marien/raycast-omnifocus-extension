@@ -56,7 +56,13 @@ export default function Command(props: LaunchProps<{ draftValues: FormValues }>)
             setTags(t);
             setIsLoading(false);
           })
-          .catch(() => setIsLoading(false));
+          .catch(() => {
+            setIsLoading(false);
+            showToast({
+              style: Toast.Style.Failure,
+              title: "Cannot get projects or tags",
+            });
+          });
       } else {
         setRequirementError(error);
       }
@@ -70,6 +76,7 @@ export default function Command(props: LaunchProps<{ draftValues: FormValues }>)
       </List>
     );
   }
+
   return (
     <Form
       isLoading={loading || isLoading}
