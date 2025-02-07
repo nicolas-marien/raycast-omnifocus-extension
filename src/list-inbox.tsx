@@ -5,6 +5,7 @@ import { deleteTask } from "./lib/api/delete-task";
 import { listTasks } from "./lib/api/list-tasks";
 import { OmniFocusTask } from "./lib/types/task";
 import { useValidateRequirements } from "./lib/utils/useValidateRequirements";
+import { Project } from "./lib/types/project";
 
 function getAccessories(task: OmniFocusTask): List.Item.Accessory[] {
   const accessories: List.Item.Accessory[] = [];
@@ -41,7 +42,7 @@ function getAccessories(task: OmniFocusTask): List.Item.Accessory[] {
   return accessories;
 }
 
-export default function ListInboxTasks() {
+export default function ListInboxTasks(props: { project?: Project }) {
   const [tasks, setTasks] = useState<OmniFocusTask[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { loading, check, error } = useValidateRequirements();
@@ -51,7 +52,7 @@ export default function ListInboxTasks() {
   const fetchTasks = async (initialFetch = false) => {
     setIsLoading(true);
     try {
-      const newTasks = await listTasks();
+      const newTasks = await listTasks(props.project ? { projectId: props.project.id } : { inbox: true });
       setTasks(newTasks);
     } catch {
       if (initialFetch) {

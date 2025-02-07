@@ -1,13 +1,25 @@
 import { OmniFocusTask } from "../types/task";
 import { executeScript } from "../utils/executeScript";
-export async function listTasks() {
+
+type ListTaskOptions =
+  | {
+      inbox: true;
+    }
+  | {
+      inbox?: false;
+      projectId: string;
+    };
+
+export async function listTasks(options: ListTaskOptions) {
   return await executeScript<OmniFocusTask[]>(`
 const omnifocus = Application("OmniFocus");
 const doc = omnifocus.defaultDocument;
 
-const tasks = doc.inboxTasks();
+const tasks = doc.flattenedTasks();
 
-return tasks.reduce((ts, t) => {
+return tasks.filter(t => {
+    return ${options.inbox ? "t.inInbox()" : `t.container().id() === "${options.projectId}"`}
+}).reduce((ts, t) => {
   const completed = t.completed();
   const dropped =  t.dropped();
   if (!completed && !dropped) {
