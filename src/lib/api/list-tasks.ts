@@ -1,7 +1,7 @@
 import { OmniFocusTask } from "../types/task";
 import { executeScript } from "../utils/executeScript";
 
-type ListTaskOptions =
+export type ListTaskOptions =
   | {
       inbox: true;
     }

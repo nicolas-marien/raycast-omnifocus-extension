@@ -5,6 +5,7 @@ import { getProjectHierarchy } from "./lib/api/project-hierarchy";
 import { Project } from "./lib/types/project";
 import { useValidateRequirements } from "./lib/utils/useValidateRequirements";
 import ListInboxTasks from "./list-inbox";
+import { TaskList } from "./lib/components/tasks-list";
 
 type ProjectWithHerarchy = Project & { hierarchy: string[] };
 
@@ -63,7 +64,7 @@ export default function Command() {
             key={p.id}
             actions={
               <ActionPanel>
-                <Action title="Select" onAction={() => push(<ListInboxTasks project={p} />)} />
+                <Action title="Select" onAction={() => push(<TaskList tasks={} />)} />
               </ActionPanel>
             }
           />
