@@ -1,7 +1,10 @@
 import { OmniFocusTask } from "../types/task";
 import { executeScript } from "../utils/executeScript";
 
-export async function listPerspectiveTasks(perspectiveName: string): Promise<OmniFocusTask[]> {
+export async function listPerspectiveTasks(perspectiveName?: string): Promise<OmniFocusTask[]> {
+  if (!perspectiveName) {
+    return []
+  }
   return await executeScript(`
 const omnifocus = Application('OmniFocus');
 const document = omnifocus.defaultDocument();

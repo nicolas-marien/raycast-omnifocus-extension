@@ -8,6 +8,7 @@ export type TaskListProps = {
   tasks?: OmniFocusTask[];
   title?: string;
   onTaskUpdated?: () => unknown;
+  accessories?: List.Props["searchBarAccessory"];
 };
 
 function getAccessories(task: OmniFocusTask): List.Item.Accessory[] {
@@ -45,7 +46,13 @@ function getAccessories(task: OmniFocusTask): List.Item.Accessory[] {
   return accessories;
 }
 
-export const TaskList: React.FunctionComponent<TaskListProps> = ({ isLoading, tasks, title, onTaskUpdated }) => {
+export const TaskList: React.FunctionComponent<TaskListProps> = ({
+  isLoading,
+  tasks,
+  title,
+  onTaskUpdated,
+  accessories,
+}) => {
   async function actionDelete(id: string) {
     try {
       await deleteTask(id);
@@ -78,7 +85,7 @@ export const TaskList: React.FunctionComponent<TaskListProps> = ({ isLoading, ta
     }
   }
   return (
-    <List isLoading={isLoading} navigationTitle={title}>
+    <List isLoading={isLoading} navigationTitle={title} searchBarAccessory={accessories}>
       {tasks?.length === 0 && <List.EmptyView title="No tasks in inbox" />}
       {tasks?.length &&
         tasks?.map((t) => {
