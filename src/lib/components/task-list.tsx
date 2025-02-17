@@ -1,4 +1,4 @@
-import { Action, ActionPanel, Color, Icon, Keyboard, List, showToast, Toast } from "@raycast/api";
+import { Action, ActionPanel, Color, Icon, Keyboard, List, showToast, Toast, open } from "@raycast/api";
 import { OmniFocusTask } from "../types/task";
 import { completeTask } from "../api/complete.task";
 import { deleteTask } from "../api/delete-task";
@@ -8,11 +8,15 @@ export type TaskListProps = {
   tasks?: OmniFocusTask[];
   title?: string;
   onTaskUpdated?: () => unknown;
-  accessories?: List.Props["searchBarAccessory"];
+  searchBarAccessory?: List.Props["searchBarAccessory"];
+  isShowingDetail?: List.Props["isShowingDetail"];
 };
 
-function getAccessories(task: OmniFocusTask): List.Item.Accessory[] {
+function getAccessories(task: OmniFocusTask, isShowingDetail: TaskListProps["isShowingDetail"]): List.Item.Accessory[] {
   const accessories: List.Item.Accessory[] = [];
+  if (isShowingDetail) {
+    return accessories;
+  }
   if (task.flagged) {
     accessories.push({ icon: Icon.Flag });
   }
@@ -51,7 +55,8 @@ export const TaskList: React.FunctionComponent<TaskListProps> = ({
   tasks,
   title,
   onTaskUpdated,
-  accessories,
+  searchBarAccessory,
+  isShowingDetail,
 }) => {
   async function actionDelete(id: string) {
     try {
@@ -85,8 +90,13 @@ export const TaskList: React.FunctionComponent<TaskListProps> = ({
     }
   }
   return (
-    <List isLoading={isLoading} navigationTitle={title} searchBarAccessory={accessories}>
-      {tasks?.length === 0 && <List.EmptyView title="No tasks in inbox" />}
+    <List
+      isLoading={isLoading}
+      navigationTitle={title}
+      searchBarAccessory={searchBarAccessory}
+      isShowingDetail={isShowingDetail}
+    >
+      {tasks?.length === 0 && <List.EmptyView title={`No tasks in ${title}`} />}
       {tasks?.length &&
         tasks?.map((t) => {
           return (
@@ -94,7 +104,32 @@ export const TaskList: React.FunctionComponent<TaskListProps> = ({
               key={t.id}
               title={t.name}
               icon={!t.completed ? Icon.Circle : Icon.Checkmark}
-              accessories={getAccessories(t)}
+              detail={
+                <List.Item.Detail
+                  markdown={t.name}
+                  metadata={
+                    <List.Item.Detail.Metadata>
+                      <List.Item.Detail.Metadata.Label
+                        title="Defer date"
+                        text={t.deferDate ? new Date(t.deferDate).toLocaleDateString() : undefined}
+                        icon={Icon.ArrowClockwise}
+                      />
+                      <List.Item.Detail.Metadata.Label
+                        title="Due date"
+                        text={{ value: t.dueDate ? new Date(t.dueDate).toLocaleDateString() : "", color: Color.Orange }}
+                        icon={Icon.Calculator}
+                      />
+                      <List.Item.Detail.Metadata.TagList title="Tags">
+                        {t.tags.map((tag) => (
+                          <List.Item.Detail.Metadata.TagList.Item text={tag} key={tag} />
+                        ))}
+                      </List.Item.Detail.Metadata.TagList>
+                      <List.Item.Detail.Metadata.Label title="Note" text={t.note} />
+                    </List.Item.Detail.Metadata>
+                  }
+                />
+              }
+              accessories={getAccessories(t, isShowingDetail)}
               actions={
                 <ActionPanel>
                   <Action title="Open" onAction={() => open(`omnifocus:///task/${t.id}`)} icon={Icon.Eye} />

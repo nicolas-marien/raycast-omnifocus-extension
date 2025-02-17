@@ -23,9 +23,10 @@ export default function PerspectivesCommand() {
     <TaskList
       isLoading={isLoading}
       tasks={data}
-      title="Could do"
+      title={perspective}
       onTaskUpdated={revalidate}
-      accessories={
+      isShowingDetail
+      searchBarAccessory={
         <List.Dropdown tooltip="Name of the perspective" onChange={setPerspective}>
           <List.Dropdown.Section title="Built-in perspectives">
             {builtInNames.map((n) => (
