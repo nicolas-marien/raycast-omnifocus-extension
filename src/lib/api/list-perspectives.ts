@@ -1,8 +1,8 @@
 import { executeScript } from "../utils/executeScript";
 
 export async function listPerspectives(): Promise<{
-  names: string[],
-  customPerspectives: {id: string, name: string}[]
+  names: string[];
+  customPerspectives: { id: string; name: string }[];
 }> {
   return await executeScript(`
 

@@ -3,7 +3,7 @@ import { executeScript } from "../utils/executeScript";
 
 export async function listPerspectiveTasks(perspectiveName?: string): Promise<OmniFocusTask[]> {
   if (!perspectiveName) {
-    return []
+    return [];
   }
   return await executeScript(`
 const omnifocus = Application("OmniFocus");
