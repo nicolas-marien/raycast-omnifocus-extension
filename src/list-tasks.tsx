@@ -1,18 +1,40 @@
+import { List, showToast, Toast } from "@raycast/api";
 import { usePromise } from "@raycast/utils";
-import { listPerspectiveTasks } from "./lib/api/list-perspectives-tasks";
-import { TaskList } from "./lib/components/task-list";
-import { List } from "@raycast/api";
 import { useState } from "react";
 import { listPerspectives } from "./lib/api/list-perspectives";
+import { listPerspectiveTasks } from "./lib/api/list-perspectives-tasks";
+import { TaskList } from "./lib/components/task-list";
 import { ValidateRequirements } from "./lib/components/with-requirements";
 
 export default function PerspectivesCommand() {
   const [perspective, setPerspective] = useState<string>("Inbox");
-  const { isLoading: perspectiveLoading, data: perspectives } = usePromise(() => listPerspectives());
-  const { isLoading, data, revalidate } = usePromise((name) => listPerspectiveTasks(name), [perspective]);
+  const {
+    isLoading: perspectiveLoading,
+    data: perspectives,
+    error: perspectiveError,
+  } = usePromise(() => listPerspectives());
+  const {
+    isLoading,
+    data,
+    revalidate,
+    error: taskError,
+  } = usePromise((name) => listPerspectiveTasks(name), [perspective]);
 
   if (perspectiveLoading) {
     return <List isLoading />;
+  }
+
+  if (perspectiveError || taskError) {
+    showToast({
+      title: "An error occurred",
+      message: "Cannot get your perspectives or the associated tasks",
+      style: Toast.Style.Failure,
+    });
+    return (
+      <List>
+        <List.EmptyView title="Cannot get your perspectives or the associated tasks" />
+      </List>
+    );
   }
 
   const { customPerspectives, names } = perspectives!;
