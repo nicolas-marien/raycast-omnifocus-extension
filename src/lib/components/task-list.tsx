@@ -89,15 +89,17 @@ export const TaskList: React.FunctionComponent<TaskListProps> = ({
       });
     }
   }
+
   return (
     <List
       isLoading={isLoading}
       navigationTitle={title}
       searchBarAccessory={searchBarAccessory}
-      isShowingDetail={isShowingDetail}
+      isShowingDetail={isShowingDetail && tasks && tasks.length > 0}
     >
-      {tasks?.length === 0 && <List.EmptyView title={`No tasks in ${title}`} />}
-      {tasks?.length &&
+      {!tasks?.length ? (
+        <List.EmptyView title={`No tasks in ${title}`} />
+      ) : (
         tasks?.map((t) => {
           return (
             <List.Item
@@ -153,7 +155,8 @@ export const TaskList: React.FunctionComponent<TaskListProps> = ({
               }
             />
           );
-        })}
+        })
+      )}
     </List>
   );
 };
