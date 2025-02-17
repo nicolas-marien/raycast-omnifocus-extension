@@ -7,7 +7,7 @@ import { listPerspectives } from "./lib/api/list-perspectives";
 import { ValidateRequirements } from "./lib/components/with-requirements";
 
 export default function PerspectivesCommand() {
-  const [perspective, setPerspective] = useState<string>();
+  const [perspective, setPerspective] = useState<string>("Inbox");
   const { isLoading: perspectiveLoading, data: perspectives } = usePromise(() => listPerspectives());
   const { isLoading, data, revalidate } = usePromise((name) => listPerspectiveTasks(name), [perspective]);
 
