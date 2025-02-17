@@ -34,17 +34,10 @@
       "mode": "view"
     },
     {
-      "name": "list-inbox",
-      "title": "List the Tasks in Your Inbox",
+      "name": "list-tasks",
+      "title": "List the Tasks of your Perspectives",
       "subtitle": "OmniFocus",
-      "description": "List the tasks currently in your inbox.",
-      "mode": "view"
-    },
-    {
-      "name": "perspectives",
-      "title": "List the Tasks in of your Perspectives",
-      "subtitle": "OmniFocus",
-      "description": "List the Tasks in of your Perspectives",
+      "description": "List the Tasks of your Perspectives",
       "mode": "view"
     }
   ],
