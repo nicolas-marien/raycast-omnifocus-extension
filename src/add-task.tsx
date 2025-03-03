@@ -29,7 +29,7 @@ export default function Command(props: LaunchProps<{ draftValues: FormValues }>)
       const taskDraft = { ...values };
       if (values.tagsToCreate) {
         const tagsToCreate = values.tagsToCreate.split(",").map((tag) => tag.trim());
-        taskDraft.tags.push(...tagsToCreate);
+        taskDraft.tags?.push(...tagsToCreate);
       }
       try {
         await addTask(taskDraft);
