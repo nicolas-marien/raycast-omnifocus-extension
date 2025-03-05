@@ -88,6 +88,5 @@ export async function addTask(options: CreateOmniFocusTaskOptions) {
 
   const url = BASE_URL + params;
 
-  console.log(url);
   await open(url);
 }
