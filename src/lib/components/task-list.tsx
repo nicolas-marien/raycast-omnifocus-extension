@@ -134,7 +134,6 @@ export const TaskList: React.FunctionComponent<TaskListProps> = ({
               accessories={getAccessories(t, isShowingDetail)}
               actions={
                 <ActionPanel>
-                  <Action title="Open" onAction={() => open(`omnifocus:///task/${t.id}`)} icon={Icon.Eye} />
                   <Action
                     title="Complete"
                     onAction={async () => {
@@ -142,6 +141,7 @@ export const TaskList: React.FunctionComponent<TaskListProps> = ({
                     }}
                     icon={Icon.CheckCircle}
                   />
+                  <Action title="Open" onAction={() => open(`omnifocus:///task/${t.id}`)} icon={Icon.Eye} />
                   <Action
                     title="Delete"
                     style={Action.Style.Destructive}
