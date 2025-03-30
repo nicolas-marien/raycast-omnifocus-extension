@@ -12,6 +12,8 @@ export async function createTag(tagName: string) {
         if (!tag) {
             doc.tags.push(omnifocus.Tag({name: '${tagName}'}));
         }
+
+        return {id: tag.id()}
     `,
   );
 }

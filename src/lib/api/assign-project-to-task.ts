@@ -5,7 +5,7 @@ export async function assignProjectToTask(taskId: string, projectName: string) {
         const omnifocus = Application('OmniFocus');
         const doc = omnifocus.defaultDocument();
         const projects = doc.flattenedProjects();
-        const project = projects.find(p => p.name() === '${projectName}');
+        const project = projects.find(p => p.name() === \`${projectName}\`);
 
         if (!project) {
             throw new Error('project_not_found');
@@ -15,7 +15,7 @@ export async function assignProjectToTask(taskId: string, projectName: string) {
         if (!task) {
             throw new Error('task_not_found');
         }
-        project.tasks.push(task);
-        
+        task.assignedContainer = project;
+        return true;
         `);
 }
